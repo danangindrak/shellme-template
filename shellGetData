@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Parameter database
+DB_HOST="your_host"
+DB_PORT="your_port"
+DB_NAME="your_dbname"
+DB_USER="your_username"
+DB_PASSWORD="your_password"
+
+# Lokasi dan nama file backup
+BACKUP_PATH="/path/to/your/backup"
+BACKUP_FILENAME="backup_$(date +%Y%m%d_%H%M%S).csv"
+
+# Query SQL untuk backup data
+SQL_QUERY="SELECT * FROM your_table_name"
+
+# Ekspor PGPASSWORD untuk otentikasi
+export PGPASSWORD=$DB_PASSWORD
+
+# Eksekusi query dan simpan hasilnya ke dalam file CSV
+psql -h $DB_HOST -p $DB_PORT -U $DB_USER -d $DB_NAME -c "\copy ($SQL_QUERY) TO '$BACKUP_PATH/$BACKUP_FILENAME' WITH CSV"
+
+# Hapus variable PGPASSWORD setelah digunakan
+unset PGPASSWORD
